@@ -7,7 +7,7 @@
   - [Create an OPA Gatekeeper for schema subject names](#create-an-opa-gatekeeper-for-schema-subject-names)
     - [Schema Regisry Setup](#schema-regisry-setup)
     - [Create the OPA Gatekeeper for subject names](#create-the-opa-gatekeeper-for-subject-names)
-  - [Define the policy at broker level](#define-the-policy-at-broker-level)
+  - [Define the policy at Kafka level](#define-the-policy-at-kafka-level)
   - [Cleanup](#cleanup)
 
 ## Intro
@@ -202,7 +202,7 @@ You can also list the schemas:
 kubectl exec schemaregistry-0 -- curl -s http://localhost:8081/subjects/
 ```
 
-## Define the policy at broker level
+## Define the policy at Kafka level
 
 First let's clean up our environment:
 
