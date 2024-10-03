@@ -220,34 +220,6 @@ helm repo add confluentinc https://packages.confluent.io/helm
 helm upgrade --install operator confluentinc/confluent-for-kubernetes --namespace confluent
 ```
 
-Dashboard:
-
-```shell
-helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
-```
-
-Token:
-
-```shell
-k  create serviceaccount -n kubernetes-dashboard admin-user
-k create clusterrolebinding -n kubernetes-dashboard admin-user --clusterrole cluster-admin --serviceaccount=kubernetes-dashboard:admin-user
-token=$(kubectl -n kubernetes-dashboard create token admin-user)
-echo $token
-```
-
-Wait for pods to be ready:
-
-```shell
-k get pods -n kubernetes-dashboard
-```
-
-And dashboard access:
-
-```shell
-kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
-```
-
 Check the operator pod has started:
 
 ```shell
@@ -262,24 +234,24 @@ mvn clean package
 cd ..
 ```
 
-So first we build our image:
+--------
+
+First we deploy our volumes:
 
 ```shell
-cd create-topic-policy
-docker build -t my-repo/custom-kafka-broker:7.7.0 .
-cd ..
+kubectl apply -f custom-volume.yaml
 ```
 
-Load in kind:
+Next we copy our library into the volume:
 
 ```shell
-kind load docker-image my-repo/custom-kafka-broker:7.7.0
+kubectl cp create-topic-policy/target/mytopicpolicy-1.0.0.jar confluent/pv-file-copy-pod:/mnt/data/mytopicpolicy-1.0.0.jar
 ```
 
-Now we can deploy the KRaft based cluster with our custom policy configured:
+Now we deploy CP:
 
 ```shell
-kubectl apply -f kraf-custom-policy.yaml
+kubectl apply -f kraft-custom.yaml
 ```
 
 Check pods are ready:

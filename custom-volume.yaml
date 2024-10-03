@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: custom-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/customdata 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: custom-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-file-copy-pod
+  namespace: confluent
+spec:
+  containers:
+    - name: pv-file-copy-container
+      image: busybox
+      command: ["/bin/sh", "-c", "sleep 3600"] 
+      volumeMounts:
+        - name: custom-pv-volume
+          mountPath: /mnt/data
+  volumes:
+    - name: custom-pv-volume
+      persistentVolumeClaim:
+        claimName: custom-pvc  
