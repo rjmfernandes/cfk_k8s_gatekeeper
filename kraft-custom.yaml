@@ -32,21 +32,6 @@ spec:
     application: docker.io/confluentinc/cp-server:7.7.0
     init: confluentinc/confluent-init-container:2.9.0
   replicas: 1
-  configOverrides:
-    server:
-    - create.topic.policy.class.name=com.confluent.csta.MyTopicPolicy
-  mountedVolumes:
-    volumes:
-      - name: custom
-        persistentVolumeClaim:
-          claimName: custom-pvc  
-    volumeMounts:
-      - name: custom
-        mountPath: /usr/ce-broker-plugins/build/libs
-  dependencies:
-    kRaftController:
-      clusterRef:
-        name: kraftcontroller
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass
