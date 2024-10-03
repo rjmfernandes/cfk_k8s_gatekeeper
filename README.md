@@ -234,8 +234,6 @@ mvn clean package
 cd ..
 ```
 
---------
-
 First we deploy our volumes:
 
 ```shell
@@ -248,7 +246,7 @@ Next we copy our library into the volume:
 kubectl cp create-topic-policy/target/mytopicpolicy-1.0.0.jar confluent/pv-file-copy-pod:/mnt/data/mytopicpolicy-1.0.0.jar
 ```
 
-Now we deploy CP:
+Now we deploy CP (**it's important to note that the mounted volume and Create Topic Policy needs to be setup for both KRaft and Broker instances**):
 
 ```shell
 kubectl apply -f kraft-custom.yaml
