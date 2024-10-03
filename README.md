@@ -312,11 +312,9 @@ And if you execute you should be able to see on logs the error:
 k logs kafka-0 | grep 'Topic name should start with demo, received:'
 ```
 
-It shouldn't be possible cause our policy demands to start with `demo`. But if we try:
+Note that the K8s resource related to the topic was created by CFK and it will keep trying to create it since in here we don't have aligned that constrain at CFK level.
 
-```shell
-kubectl apply -f demoright-topic.yaml
-```
+In any case Kafka won't allow cause our custom java policy demands the name to start with `demo`. 
 
 And if we tried directly the error now should be explicit:
 
@@ -330,7 +328,7 @@ But if we try:
 kubectl apply -f demoright-topic.yaml
 ```
 
-The topic should ion fact be created cause its name starts with demo:
+The topic should ion fact be created cause its name starts with demo and we can see it listed:
 
 ```shell
 kubectl exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --list
