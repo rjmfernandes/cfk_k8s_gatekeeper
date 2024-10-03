@@ -328,7 +328,7 @@ But if we try:
 kubectl apply -f demoright-topic.yaml
 ```
 
-The topic should ion fact be created cause its name starts with demo and we can see it listed:
+The topic should in fact be created cause its name now starts with demo and we can see it listed:
 
 ```shell
 kubectl exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --list
