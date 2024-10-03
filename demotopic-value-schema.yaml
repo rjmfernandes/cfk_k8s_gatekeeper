@@ -1,0 +1,9 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Schema
+metadata:
+  name: demotopic-value
+  namespace: confluent
+spec:
+  data:
+    configRef: demo-schema-config
+    format: avro

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-schema-config
+  namespace: confluent
+data:
+  schema: |
+    {
+      "type": "record",
+      "name": "Customer",
+      "fields": [
+        {"name": "customer_id", "type": "string"},
+        {"name": "first_name", "type": "string"},
+        {"name": "last_name", "type": "string"},
+        {"name": "email", "type": "string"}
+      ]
+    }

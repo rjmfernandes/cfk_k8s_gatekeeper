@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8stopicname
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sTopicName
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package kafkatopicname
+        violation[{"msg": msg}] {
+          input.review.object.kind == "KafkaTopic"
+          name := input.review.object.metadata.name
+          not valid_name(name)
+          msg := sprintf("Kafka topic name '%v' does not follow the required naming pattern", [name])
+        }
+        
+        valid_name(name) {
+          re_match("^[a-z]+$", name)  
+        }
