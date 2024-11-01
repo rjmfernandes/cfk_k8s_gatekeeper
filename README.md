@@ -7,6 +7,7 @@
   - [Create an OPA Gatekeeper for schema subject names](#create-an-opa-gatekeeper-for-schema-subject-names)
     - [Schema Regisry Setup](#schema-regisry-setup)
     - [Create the OPA Gatekeeper for subject names](#create-the-opa-gatekeeper-for-subject-names)
+  - [Create an OPA GateKeeper for partition count](#create-an-opa-gatekeeper-for-partition-count)
   - [Define the policy at Kafka level](#define-the-policy-at-kafka-level)
   - [Cleanup](#cleanup)
 
@@ -152,7 +153,7 @@ We create a schema config first:
 kubectl apply -f demo-schema.yaml
 ```
 
-Next we apply to the value of the originally creatde topic `demotopic`:
+Next we apply to the value of the originally created topic `demotopic`:
 
 ```shell
 kubectl apply -f demotopic-value-schema.yaml
@@ -201,6 +202,40 @@ You can also list the schemas:
 ```shell
 kubectl exec schemaregistry-0 -- curl -s http://localhost:8081/subjects/
 ```
+
+## Create an OPA GateKeeper for partition count
+
+Now lets's install the template that demands all topics to have maximum 4 partitions:
+
+```shell
+kubectl apply -f kafkatopic-partitioning-template.yaml
+```
+
+Now we create the constraint that applies to `KafkaTopic` resources:
+
+```shell
+kubectl apply -f kafkatopic-partitioning-constraint.yaml
+```
+
+Let's try to create a topic with partitions bigger than 4:
+
+```shell
+kubectl apply -f wrong-partitions.yaml
+```
+
+Let's try to create one with right number of partitions:
+
+```shell
+kubectl apply -f right-partitions.yaml
+```
+
+Now we can list the topics:
+
+```shell
+kubectl exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --list
+```
+
+One can use the same mechanism for other topic properties as `cleanup.policy` or `retention.ms`.
 
 ## Define the policy at Kafka level
 
@@ -305,6 +340,8 @@ kubectl exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --list
 ```
 
 So ideally in a CFK scenario one would say the best thing could be to have both combined: the `create.topic.policy.class.name` and the K8s OPA Gatekeeper.
+
+**Note:** The example Java Topic class `com.confluent.csta.MyTopicPolicy` also includes commented code for other possible validations as it could be `numPartitions`. But it's also to have for other configurations as `cleanup.policy` or `retention.ms`. And just as it happens with topic names ideally we would want these constraints to be applied the same way both at the K8s OPA Gatekeeper and `create.topic.policy.class.name` levels.
 
 ## Cleanup
 

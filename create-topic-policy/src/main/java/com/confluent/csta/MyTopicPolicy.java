@@ -12,7 +12,11 @@ public class MyTopicPolicy implements CreateTopicPolicy {
             if (! requestMetadata.topic().startsWith("demo")) {
                 throw new PolicyViolationException("Topic name should start with demo, received:" + requestMetadata.topic());
             }
+            /*if( requestMetadata.numPartitions() > 4 ) {
+                throw new PolicyViolationException("Number of partitions should not be greater than 4, received:" + requestMetadata.numPartitions());
+            }*/
         }
+        
     }
 
     @Override

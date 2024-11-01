@@ -1,0 +1,22 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: kafkatopicpartitionlimit
+spec:
+  crd:
+    spec:
+      names:
+        kind: KafkaTopicPartitionLimit
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package kafkatopicpartitionlimit
+
+        # Check if partitionCount is greater than 4
+        violation[{"msg": msg}] {
+          input.review.object.kind == "KafkaTopic"
+          partition_count := input.review.object.spec.partitionCount
+          partition_count > 4
+          msg := sprintf("KafkaTopic partitionCount must not exceed 4, but got %v", [partition_count])
+        }
+

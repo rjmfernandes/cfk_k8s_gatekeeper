@@ -1,0 +1,12 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: wrongpartitions
+  namespace: confluent
+spec:
+  kafkaRestClassRef:
+    name: krc-cfk
+  replicas: 1
+  partitionCount: 6
+  configs:
+    cleanup.policy: "delete"
