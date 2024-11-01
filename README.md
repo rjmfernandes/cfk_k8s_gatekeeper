@@ -341,7 +341,7 @@ kubectl exec kafka-0 -- kafka-topics --bootstrap-server localhost:9092 --list
 
 So ideally in a CFK scenario one would say the best thing could be to have both combined: the `create.topic.policy.class.name` and the K8s OPA Gatekeeper.
 
-**Note:** The example Java Topic class `com.confluent.csta.MyTopicPolicy` also includes commented code for other possible validations as it could be `numPartitions`. But it's also to have for other configurations as `cleanup.policy` or `retention.ms`. And just as it happens with topic names ideally we would want these constraints to be applied the same way both at the K8s OPA Gatekeeper and `create.topic.policy.class.name` levels.
+**Note:** The example Java Topic class `com.confluent.csta.MyTopicPolicy` also includes commented code for other possible validations as it could be `numPartitions`. But it's also possible to have for other configurations as `cleanup.policy` or `retention.ms`. And just as it happens with topic names ideally we would want these constraints to be applied the same way both at the K8s OPA Gatekeeper and `create.topic.policy.class.name` levels.
 
 ## Cleanup
 
