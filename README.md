@@ -1,6 +1,7 @@
 # CFK K8s Gate Keeper
 
 - [CFK K8s Gate Keeper](#cfk-k8s-gate-keeper)
+  - [Disclaimer](#disclaimer)
   - [Intro](#intro)
   - [Setup](#setup)
   - [Create an OPA Gatekeeper for topic names](#create-an-opa-gatekeeper-for-topic-names)
@@ -10,6 +11,11 @@
   - [Create an OPA GateKeeper for partition count](#create-an-opa-gatekeeper-for-partition-count)
   - [Define the policy at Kafka level](#define-the-policy-at-kafka-level)
   - [Cleanup](#cleanup)
+
+## Disclaimer
+
+The code and/or instructions here available are **NOT** intended for production usage. 
+It's only meant to serve as an example or reference and does not replace the need to follow actual and official documentation of referenced products.
 
 ## Intro
 
